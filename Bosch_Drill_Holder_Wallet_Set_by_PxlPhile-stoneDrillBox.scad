@@ -31,12 +31,12 @@
 // This is a module file being included from a main file. 
 // Please open that main file to configure general settings
 
+use <openscad-utils.scad>;
+
 stoneDrillBoxWidth=millimeter(55);
 stoneDrillBoxDepth=millimeter(42);
 stoneDrillBoxHeight=millimeter(14);
 stoneDrillSeparatorInMM=millimeter(7);
-stoneDrillHoldingBarMaxHeightInMM=millimeter(12);
-stoneDrillHoldingBarMinHeightInMM=millimeter(8);
 stoneDrillSmallestDrillDiameter=millimeter(3.2);
 stoneDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
 
@@ -53,44 +53,23 @@ module stoneDrillBox() {
 }
 
 module stoneDrillHoldingBar() {
-    // construct a hexahedron from points and create faces from it
-    borderOffset = stoneDrillSeparatorInMM;
+    borderOffset = millimeter(5 * nozzleDiameterInMM);
     barSize = millimeter(14 * nozzleDiameterInMM);
     paddingBottom = millimeter(30);
-    rampOffset = stoneDrillHoldingBarMinHeightInMM;
+    rampOffset = borderOffset + stoneDrillSmallestDrillDiameter;
     
-    x0=0;
-    y0=0 + paddingBottom;
-    z0=0 + stoneDrillSmallestDrillDiameter;
-    xMax=stoneDrillBoxWidth;
-    yMax=barSize + paddingBottom;
-    zMax=stoneDrillHoldingBarMaxHeightInMM;
-    
-    ps=[
-        [x0,   y0,   z0],   // point 0
-        [x0,   yMax, z0],   // ...
-        [x0,   yMax, zMax],
-        [x0,   y0,   zMax],
-        [xMax, y0,   z0],
-        [xMax, yMax, z0],   // point 5
-   ];
-      
-   fs=[
-        [0,1,2,3], // faces reference above points
-        [5,4,3,2],
-        [0,4,5,1],
-        [0,3,4],
-        [5,2,1]
+    lowPoint=[
+        0, 
+        0 + paddingBottom, 
+        0 + rampOffset
     ];
-    
-    // move ramp box near box top as means of drill holding
-    union() {
-        // draw ramp
-        color("lightgray") polyhedron(points=ps,faces=fs);
-        // fill the space between the ramp and the box area
-        color("darkgray") translate([0, paddingBottom, 0])
-            cube([stoneDrillBoxWidth, barSize, stoneDrillSmallestDrillDiameter]);
-    }
+    maxPoint=[
+        stoneDrillBoxWidth, 
+        barSize + paddingBottom,
+        stoneDrillBoxHeight
+    ];
+
+    boxedRamp(lowPoint, maxPoint, 0);
 }
 
 module stoneDrillBoxText() {

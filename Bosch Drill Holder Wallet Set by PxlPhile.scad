@@ -30,6 +30,8 @@
 
 // This software works with OpenSCAD 2019.05 or same-ish.
 
+use <openscad-utils.scad>;
+
 // Global resolution
 $fs = 0.05;  // Don't generate smaller facets than 0.1 mm
 $fa = 5;    // Don't generate larger angles than 5 degrees
@@ -61,10 +63,3 @@ intersection() {
         translate([130,0,0]) stoneDrillBox();
     }
 }
-
-
-// millimeter returns the same value for semantical purposes (that is to avoid magic numbers).
-function millimeter(valueInMM) = valueInMM;
-
-// degree returns the same value for semantical purposes (that is to avoid magic numbers).
-function degree(valueInDegree) = valueInDegree;
