@@ -127,7 +127,7 @@ module stoneDrillHoldingHoles() {
         xpos = entry.y;
         
         rotate([90, 0, 0]) 
-            translate([xpos-2.6, stoneDrillBoxHeight/10 + dia/2, -40 ])
+            translate([xpos-2.3, stoneDrillBoxHeight/10 + dia/2, -40 ])
             color("yellow") cylinder(d=dia, h=30, center=true);
     }
 }
