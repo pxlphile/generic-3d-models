@@ -117,3 +117,28 @@ module openRoundedBoxDiff(outerBoxSizeVecInMM, boxAndBorderThicknessInMM) {
                     cylinder(d=h, h=w, center = true);
     }
 }
+
+module drillBoxText(txt, boxWidthInMM) {
+    // With these values you have to fit it yourself because it depends on the font.
+    // The resulting text object is not really measureable, so just wing it.
+    paddingBottom = millimeter(30 + 0.5);
+    xMargin=boxWidthInMM/2;
+    
+    translate([xMargin, paddingBottom, 1.2])    
+        rotate([0,180,0])
+            linear_extrude(height = 2)
+                text(txt, size = 5, font = str("Liberation Sans"), halign="center");
+}
+
+module drillSizeText(drillHoleDiasAndPositionsInMM, paddingLeftInMM, printerTolerance) {
+    for (entry = drillHoleDiasAndPositionsInMM) {
+        txt = entry[0];
+        dia = entry[1] + printerTolerance;
+        xPos = entry[2];
+        
+        translate([xPos-2.3+paddingLeftInMM, 37, -1.2 ])
+            linear_extrude(height = 2)
+                rotate([180, 0, 180]) 
+                    text(txt, size = 2, font = str("Liberation Sans"), halign="center");
+    }
+}

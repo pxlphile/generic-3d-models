@@ -36,9 +36,23 @@ use <openscad-utils.scad>;
 stoneDrillBoxWidth=millimeter(55);
 stoneDrillBoxDepth=millimeter(42);
 stoneDrillBoxHeight=millimeter(14);
-stoneDrillSeparatorInMM=millimeter(7);
-stoneDrillSmallestDrillDiameter=millimeter(3.2);
+stoneDrillSeparatorInMM=millimeter(3);
 stoneDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
+
+stoneDrillSmallestDrillDiameter=millimeter(3.2);
+// arg0: print name on the box, usually diameter or measured in millimeter
+// arg1: actual (that is, without printer tolerance) diameter in millimeter
+// arg2: calculated X position for positioning names, holes or holding pins.
+//       calculating here X pos by myself because spreding non-equal objects 
+//       over an axis is a hell in OpenSCAD, don't judge me
+// arg3: pin Y position
+stoneDrillHoleDiametersAndPositionsInMM=[
+    [ "10", 7.5,                 7.5 + 0*stoneDrillSeparatorInMM, 2.0 ],
+    [ "8",  6.3,             6.3+7.5 + 1*stoneDrillSeparatorInMM, 0.0 ],
+    [ "6",  4.4,         4.4+6.3+7.5 + 2*stoneDrillSeparatorInMM, 3.0 ],
+    [ "5",  4.2,     4.2+4.4+6.3+7.5 + 3*stoneDrillSeparatorInMM, 11.0 ],
+    [ "4",  3.2, 3.2+4.2+4.4+6.3+7.5 + 4*stoneDrillSeparatorInMM, 16.0 ],
+];
 
 module stoneDrillBox() {
     difference() {
@@ -49,6 +63,7 @@ module stoneDrillBox() {
         }
         stoneDrillHoldingHoles();
         stoneDrillBoxText();
+        stoneDrillSizeLabel();
     }
 }
 
@@ -73,37 +88,16 @@ module stoneDrillHoldingBar() {
 }
 
 module stoneDrillBoxText() {
-    // With these values you have to fit it yourself because it depends on the font.
-    // The resulting text object is not really measureable, so just wing it.
-    paddingBottom = millimeter(30 + 0.5);
-    xMargin=stoneDrillBoxWidth/2;
-    
-    boxText=stoneDrillBoxText; // take from global variable
-    
-    translate([xMargin, paddingBottom, 1.2])    
-        rotate([0,180,0])
-            linear_extrude(height = 2)
-                text(boxText, size = 5, font = str("Liberation Sans"), halign="center");
+    drillBoxText(stoneDrillBoxText, stoneDrillBoxWidth);
 }
 
 module stoneDrillHoldingPins() {
-    // x: as from stoneDrillHoldingHoles()
-    // y: The X positions are basically copied from the original box.
-    // They are set this way in order to provide a ascending "organ pipe" look
     borderOffset = stoneDrillSeparatorInMM;
     
-    pinPositions=[
-        [                 7.5 + 0*borderOffset, 2.0 ],
-        [             6.3+7.5 + 1*borderOffset, 0.0 ],
-        [         4.4+6.3+7.5 + 2*borderOffset, 3.0 ],
-        [     4.2+4.4+6.3+7.5 + 3*borderOffset, 11.0 ],
-        [ 3.2+4.2+4.4+6.3+7.5 + 4*borderOffset, 16.0 ],
-    ];
+    paddingLeft = millimeter(8);
     
-    for (entry = pinPositions) {
-//        echo("entry:", entry);
-        
-        translate([entry.x-4, entry.y, -0 ])
+    for (entry = stoneDrillHoleDiametersAndPositionsInMM) {
+        translate([entry[2] - 4+paddingLeft, entry[3], -0 ])
             rotate([90,0,0]) color("yellow") cube([2.4, 6.2, 1.7]);
     }
 }
@@ -111,25 +105,22 @@ module stoneDrillHoldingPins() {
 module stoneDrillHoldingHoles() {
     borderOffset = stoneDrillSeparatorInMM;
     
-    // x: ideal diameters without printer roughness, y: calculated X position
-    // calculating here X pos by myself because spreding non-equal objects over an axis is a hell in OpenSCAD, don't judge me
-    drillHoleDiametersAndXPositionInMM=[
-        [ 7.5,                 7.5 + 0*borderOffset ],
-        [ 6.3,             6.3+7.5 + 1*borderOffset ],
-        [ 4.4,         4.4+6.3+7.5 + 2*borderOffset ],
-        [ 4.2,     4.2+4.4+6.3+7.5 + 3*borderOffset ],
-        [ 3.2, 3.2+4.2+4.4+6.3+7.5 + 4*borderOffset ],
-    ];
+    paddingLeft = millimeter(8);
     
-    for (entry = drillHoleDiametersAndXPositionInMM) {
-//        echo("entry:", entry);
-        dia = entry.x + printerRoughnessInMM;
-        xpos = entry.y;
+    for (entry = stoneDrillHoleDiametersAndPositionsInMM) {
+        dia = entry[1] + printerRoughnessInMM;
+        xpos = entry[2];
         
         rotate([90, 0, 0]) 
-            translate([xpos-2.3, stoneDrillBoxHeight/10 + dia/2, -40 ])
-            color("yellow") cylinder(d=dia, h=30, center=true);
+            translate([xpos-2.3+paddingLeft, stoneDrillBoxHeight/10 + dia/2, -40 ])
+                color("yellow") cylinder(d=dia, h=30, center=true);
     }
+}
+
+module stoneDrillSizeLabel() {
+    paddingLeft = millimeter(8);
+
+    drillSizeText(stoneDrillHoleDiametersAndPositionsInMM, paddingLeft, printerRoughnessInMM);
 }
 
 module stoneDrillMainBox() {

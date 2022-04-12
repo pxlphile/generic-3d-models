@@ -36,9 +36,23 @@ use <openscad-utils.scad>;
 woodDrillBoxWidth=millimeter(55);
 woodDrillBoxDepth=millimeter(42);
 woodDrillBoxHeight=millimeter(14);
-woodDrillSeparatorInMM=millimeter(5);
-woodDrillSmallestDrillDiameter=millimeter(4);
+woodDrillSeparatorInMM=millimeter(3);
 woodDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
+
+woodDrillSmallestDrillDiameter=millimeter(4);
+// arg0: print name on the box, usually diameter or measured in millimeter
+// arg1: actual (that is, without printer tolerance) diameter in millimeter
+// arg2: calculated X position for positioning names, holes or holding pins.
+//       calculating here X pos by myself because spreding non-equal objects 
+//       over an axis is a hell in OpenSCAD, don't judge me
+// arg3: pin Y position
+woodDrillHoleDiametersAndPositionsInMM=[
+        [ "10", 10.0,        10 + 0*woodDrillSeparatorInMM, 0.0 ],
+        [ "8",  8.0,       8+10 + 1*woodDrillSeparatorInMM, 0.0 ],
+        [ "6",  6.0,     6+8+10 + 2*woodDrillSeparatorInMM, 10.0 ],
+        [ "5",  5.0,   5+6+8+10 + 3*woodDrillSeparatorInMM, 11.0 ],
+        [ "4",  4.0, 4+5+6+8+10 + 4*woodDrillSeparatorInMM, 17.0 ],
+    ];
 
 module woodDrillBox() {
     difference() {
@@ -49,6 +63,7 @@ module woodDrillBox() {
         }
         woodDrillHoldingHoles();
         woodDrillBoxText();
+        woodDrillSizeLabel();
     }
 }
 
@@ -73,64 +88,38 @@ module woodDrillHoldingBar() {
 }
 
 module woodDrillBoxText() {
-    // With these values you have to fit it yourself because it depends on the font.
-    // The resulting text object is not really measureable, so just wing it.
-    paddingBottom = millimeter(30 + 0.5);
-    xMargin=woodDrillBoxWidth/2;
-    
-    boxText=woodDrillBoxText; // take from global variable
-    
-    translate([xMargin, paddingBottom, 1.2])    
-        rotate([0,180,0])
-            linear_extrude(height = 2)
-                text(boxText, size = 5, font = str("Liberation Sans"), halign="center");
+    drillBoxText(woodDrillBoxText, woodDrillBoxWidth);
 }
 
 module woodDrillHoldingPins() {
-    // x: as from woodDrillHoldingHoles()
-    // y: The X positions are basically copied from the original box.
-    // They are set this way in order to provide a ascending "organ pipe" look
-    borderOffset = woodDrillSeparatorInMM;
+    paddingLeft = millimeter(5);
     
-    pinPositions=[
-        [ 0+10 + 0*borderOffset, 0.0 ],
-        [ 8+10 + 1*borderOffset, 0.0 ],
-        [ 6+8+10 + 2*borderOffset, 10.0 ],
-        [ 5+6+8+10 + 3*borderOffset, 11.0 ],
-        [ 4+5+6+8+10 + 4*borderOffset, 17.0 ],
-    ];
-    
-    for (entry = pinPositions) {
-//        echo("entry:", entry);
-        
-        translate([entry.x-4, entry.y, -0 ])
+    for (entry = woodDrillHoleDiametersAndPositionsInMM) {
+        translate([entry[2] - 4+paddingLeft, entry[3], -0 ])
             rotate([90,0,0]) color("yellow") cube([2.4, 6.2, 1.7]);
     }
     
 }
 
 module woodDrillHoldingHoles() {
-    borderOffset = millimeter(5);
+    borderOffset = woodDrillSeparatorInMM;
     
-    // x: ideal diameters without printer roughness, y: calculated X position
-    // calculating here X pos by myself because spreding non-equal objects over an axis is a hell in OpenSCAD, don't judge me
-    drillHoleDiametersAndXPositionInMM=[
-        [ 10.0, 0+10 + 0*borderOffset ],
-        [ 8.0, 8+10 + 1*borderOffset ],
-        [ 6.0, 6+8+10 + 2*borderOffset ],
-        [ 5.0, 5+6+8+10 + 3*borderOffset ],
-        [ 4.0, 4+5+6+8+10 + 4*borderOffset ],
-    ];
+    paddingLeft = millimeter(5);
     
-    for (entry = drillHoleDiametersAndXPositionInMM) {
-//        echo("entry:", entry);
-        dia = entry.x + printerRoughnessInMM;
-        xpos = entry.y;
+    for (entry = woodDrillHoleDiametersAndPositionsInMM) {
+        dia = entry[1] + printerRoughnessInMM;
+        xpos = entry[2];
         
         rotate([90, 0, 0]) 
-            translate([xpos-2.6, woodDrillBoxHeight/10 + dia/2, -40 ])
-            color("yellow") cylinder(d=dia, h=30, center=true);
+            translate([xpos-2.6+paddingLeft, woodDrillBoxHeight/10 + dia/2, -40 ])
+                color("yellow") cylinder(d=dia, h=30, center=true);
     }
+}
+
+module woodDrillSizeLabel() {
+    paddingLeft = millimeter(5);
+
+    drillSizeText(woodDrillHoleDiametersAndPositionsInMM, paddingLeft, printerRoughnessInMM);
 }
 
 module woodDrillMainBox() {
