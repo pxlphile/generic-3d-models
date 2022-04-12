@@ -33,8 +33,12 @@
 use <openscad-utils.scad>;
 
 // Global resolution
-$fs = 0.05;  // Don't generate smaller facets than 0.1 mm
-$fa = 5;    // Don't generate larger angles than 5 degrees
+// Don't generate smaller facets than x mm
+// higher values => smaller rendition time but more coarse objects
+// at 0.05 a full rendition takes on my computer 3 minutes.
+$fs = 0.05;
+// Don't generate larger angles than x degrees
+$fa = 5;
 
 // --- 3D printer related settings --
 
