@@ -77,3 +77,43 @@ module boxedRamp(prismMinPoint, prismMaxPoint, zBottom) {
             cube([xMax-x0, yMax-y0,z0-zBottom]);
     }
 }
+
+module openRoundedBox(outerBoxSizeVecInMM, boxAndBorderThicknessInMM) {
+    difference() {
+        openRoundedBoxBlock(outerBoxSizeVecInMM);
+        openRoundedBoxDiff(outerBoxSizeVecInMM, boxAndBorderThicknessInMM);
+    }
+}
+
+module openRoundedBoxBlock(outerBoxSizeVecInMM) {
+    w = outerBoxSizeVecInMM.x;
+    d = outerBoxSizeVecInMM.y;
+    h = outerBoxSizeVecInMM.z;
+    
+    union() {
+        color("Blue") cube([w, d, h]);
+        
+        translate([w, 0, 0]) color("Green")
+            rotate([0,90,0])
+                translate([-h/2, 0, -w/2])
+                    cylinder(r=h/2, h=w, center = true);
+        }
+}
+
+module openRoundedBoxDiff(outerBoxSizeVecInMM, boxAndBorderThicknessInMM) {
+    borderOffset = boxAndBorderThicknessInMM;
+    w = outerBoxSizeVecInMM.x - borderOffset;
+    d = outerBoxSizeVecInMM.y - borderOffset;
+    h = outerBoxSizeVecInMM.z - borderOffset;
+    wayHigherToCutAwayTop=millimeter(10);
+    
+    color("red") union() {
+        translate([borderOffset/2, 0-1,  borderOffset/2]) color("yellow")
+            cube([w, d+1+borderOffset/2, h+wayHigherToCutAwayTop]);
+
+        translate([w+borderOffset/2, 0,  0]) color("yellow")
+            scale([1, 1, 1.1]) // make oval to cut more from upper side to avoid overhang
+                rotate([0, 90, 0]) translate([-h/2 -0.92 , 0, -w/2]) // align with long side
+                    cylinder(d=h, h=w, center = true);
+    }
+}

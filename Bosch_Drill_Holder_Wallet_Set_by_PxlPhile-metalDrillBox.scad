@@ -147,36 +147,8 @@ module metalDrillHoldingHoles() {
 }
 
 module metalDrillMainBox() {
-    difference() {
-        metalHalfRoundedMainBox();
-        metalHalfRoundedMainBoxDiff();
-    }
-}
-
-module metalHalfRoundedMainBox() {
-    union() {
-        color("Blue") cube([metalDrillBoxWidth, metalDrillBoxDepth, metalDrillBoxHeight]);
-        
-        translate([metalDrillBoxWidth, 0, 0]) color("Green")
-            rotate([0,90,0])
-                translate([-metalDrillBoxHeight/2, 0, -metalDrillBoxWidth/2])
-                    cylinder(r=metalDrillBoxHeight/2, h=metalDrillBoxWidth, center = true);
-        }
-}
-
-module metalHalfRoundedMainBoxDiff() {
-    borderOffset = 5*nozzleDiameterInMM;
-    w = metalDrillBoxWidth - borderOffset;
-    d = metalDrillBoxDepth - borderOffset;
-    h = metalDrillBoxHeight - borderOffset;
+    outerBoxVec=[metalDrillBoxWidth, metalDrillBoxDepth, metalDrillBoxHeight];
+    borderAndPlaneThickness=5*nozzleDiameterInMM;
     
-    color("red") union() {
-        translate([borderOffset/2, 0-1,  borderOffset/2]) color("yellow")
-            cube([w, d+1+borderOffset/2, h+10]);
-
-        translate([w+borderOffset/2, 0,  0]) color("yellow")
-            scale([1, 1, 1.1]) // make oval to cut more from upper side to avoid overhang
-                rotate([0, 90, 0]) translate([(-h ) / 2 -0.92 , 0, (-w)/2]) // align with long side
-                        cylinder(d=h, h=w, center = true);
-    }
+    openRoundedBox(outerBoxVec, borderAndPlaneThickness);
 }

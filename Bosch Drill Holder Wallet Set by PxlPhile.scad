@@ -58,7 +58,7 @@ include <Bosch_Drill_Holder_Wallet_Set_by_PxlPhile-stoneDrillBox.scad>;
 intersection() {
     // comment out the boxen you don't want to render
     union() {
-//        translate([0,0,0]) metalDrillBox();
+        translate([0,0,0]) metalDrillBox();
         translate([70,0,0]) woodDrillBox();
         translate([130,0,0]) stoneDrillBox();
     }

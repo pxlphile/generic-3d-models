@@ -133,36 +133,7 @@ module stoneDrillHoldingHoles() {
 }
 
 module stoneDrillMainBox() {
-    difference() {
-        stoneHalfRoundedMainBox();
-        stoneHalfRoundedMainBoxDiff();
-    }
-}
-
-module stoneHalfRoundedMainBox() {
-    union() {
-        color("Blue") cube([stoneDrillBoxWidth, stoneDrillBoxDepth, stoneDrillBoxHeight]);
-        
-        translate([stoneDrillBoxWidth, 0, 0]) color("Green")
-            rotate([0,90,0])
-                translate([-stoneDrillBoxHeight/2, 0, -stoneDrillBoxWidth/2])
-                    cylinder(r=stoneDrillBoxHeight/2, h=stoneDrillBoxWidth, center = true);
-        }
-}
-
-module stoneHalfRoundedMainBoxDiff() {
-    borderOffset = stoneDrillBoxPlaneThickness;
-    w = stoneDrillBoxWidth - borderOffset;
-    d = stoneDrillBoxDepth - borderOffset;
-    h = stoneDrillBoxHeight - borderOffset;
+    outerBoxVec=[stoneDrillBoxWidth, stoneDrillBoxDepth, stoneDrillBoxHeight];
     
-    color("red") union() {
-        translate([borderOffset/2, 0-1,  borderOffset/2]) color("yellow")
-            cube([w, d+1+borderOffset/2, h+10]);
-
-        translate([w+borderOffset/2, 0,  0]) color("yellow")
-            scale([1, 1, 1.1]) // make oval to cut more from upper side to avoid overhang
-                rotate([0, 90, 0]) translate([(-h ) / 2 -0.92 , 0, (-w)/2]) // align with long side
-                        cylinder(d=h, h=w, center = true);
-    }
+    openRoundedBox(outerBoxVec, stoneDrillBoxPlaneThickness);
 }
