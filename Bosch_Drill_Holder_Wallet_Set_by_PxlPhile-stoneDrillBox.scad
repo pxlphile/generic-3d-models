@@ -71,7 +71,7 @@ module stoneDrillBox() {
 
 module stoneDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    paddingBottom = millimeter(30);
+    paddingBottom = rampBarPaddingBottomInMM;
     rampOffset = borderOffset + stoneDrillSmallestDrillDiameter;
     
     lowPoint=[

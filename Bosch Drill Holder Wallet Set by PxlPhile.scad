@@ -53,6 +53,9 @@ metalDrillBoxText = "METALL";
 woodDrillBoxText = "HOLZ";
 stoneDrillBoxText = "STEIN";
 
+rampBarSizeInMM = millimeter(14 * nozzleDiameterInMM);
+rampBarPaddingBottomInMM = millimeter(30);
+
 // global variables must come before the file include happens.
 include <Bosch_Drill_Holder_Wallet_Set_by_PxlPhile-metalDrillBox.scad>;
 include <Bosch_Drill_Holder_Wallet_Set_by_PxlPhile-woodDrillBox.scad>;
