@@ -41,7 +41,7 @@ woodDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
 // sets the distance of x related entities (positioning names, holes or holding pins) to the border.
 woodDrillPaddingLeft = millimeter(1.4);
 
-woodDrillSmallestDrillDiameter=millimeter(4);
+woodDrillSmallestDrillDiameterInMM=millimeter(4);
 // arg0: print name on the box, usually diameter or measured in millimeter
 // arg1: actual (that is, without printer tolerance) diameter in millimeter
 // arg2: calculated position for x related entities (positioning names, holes or holding pins).
@@ -71,21 +71,9 @@ module woodDrillBox() {
 
 module woodDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    paddingBottom = rampBarPaddingBottomInMM;
-    rampOffset = borderOffset + woodDrillSmallestDrillDiameter;
+    outerBoxVec=[woodDrillBoxWidth, woodDrillBoxDepth, woodDrillBoxHeight];
     
-    lowPoint=[
-        0, 
-        0 + paddingBottom, 
-        0 + rampOffset
-    ];
-    maxPoint=[
-        woodDrillBoxWidth, 
-        rampBarSizeInMM + paddingBottom,
-        woodDrillBoxHeight
-    ];
-
-    boxedRamp(lowPoint, maxPoint, 0);
+    drillHoldingBar(borderOffset, outerBoxVec, rampBarSizeInMM, rampBarPaddingBottomInMM, woodDrillSmallestDrillDiameterInMM);
 }
 
 module woodDrillBoxText() {

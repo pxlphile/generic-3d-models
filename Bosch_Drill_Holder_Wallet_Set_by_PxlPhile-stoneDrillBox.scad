@@ -41,7 +41,7 @@ stoneDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
 // sets the distance of x related entities (positioning names, holes or holding pins) to the border.
 stoneDrillPaddingLeft = millimeter(6.4);
 
-stoneDrillSmallestDrillDiameter=millimeter(3.2);
+stoneDrillSmallestDrillDiameterInMM=millimeter(3.2);
 // arg0: print name on the box, usually diameter or measured in millimeter
 // arg1: actual (that is, without printer tolerance) diameter in millimeter
 // arg2: calculated X position for positioning names, holes or holding pins.
@@ -71,21 +71,9 @@ module stoneDrillBox() {
 
 module stoneDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    paddingBottom = rampBarPaddingBottomInMM;
-    rampOffset = borderOffset + stoneDrillSmallestDrillDiameter;
+    outerBoxVec=[stoneDrillBoxWidth, stoneDrillBoxDepth, stoneDrillBoxHeight];
     
-    lowPoint=[
-        0, 
-        0 + paddingBottom, 
-        0 + rampOffset
-    ];
-    maxPoint=[
-        stoneDrillBoxWidth, 
-        rampBarSizeInMM + paddingBottom,
-        stoneDrillBoxHeight
-    ];
-
-    boxedRamp(lowPoint, maxPoint, 0);
+    drillHoldingBar(borderOffset, outerBoxVec, rampBarSizeInMM, rampBarPaddingBottomInMM, stoneDrillSmallestDrillDiameterInMM);
 }
 
 module stoneDrillBoxText() {

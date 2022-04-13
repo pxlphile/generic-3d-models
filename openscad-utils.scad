@@ -36,6 +36,27 @@ function millimeter(valueInMM) = valueInMM;
 // degree returns the same value for semantical purposes (that is to avoid magic numbers).
 function degree(valueInDegree) = valueInDegree;
 
+module drillHoldingBar(borderOffsetInMM, outerBoxSizeVecInMM, rampBarSizeInMM, rampBarPaddingBottomInMM, smallestDrillDiameterInMM) {
+    paddingBottom = rampBarPaddingBottomInMM;
+    rampOffset = borderOffsetInMM + smallestDrillDiameterInMM;
+    
+    drillBoxWidth = outerBoxSizeVecInMM.x;
+    drillBoxHeight = outerBoxSizeVecInMM.z;
+    
+    lowPoint=[
+        0, 
+        0 + paddingBottom, 
+        0 + rampOffset
+    ];
+    maxPoint=[
+        drillBoxWidth, 
+        rampBarSizeInMM + paddingBottom,
+        drillBoxHeight
+    ];
+
+    boxedRamp(lowPoint, maxPoint, 0);
+}
+
 // boxedRamp creates a regular hexahedron ramp.
 // param: minPoint - 3D coordinate with the lowest values of the prism
 // param: minPoint - 3D coordinate with the highest values of the prism

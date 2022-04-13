@@ -38,7 +38,7 @@ metalDrillBoxDepth=millimeter(42);
 metalDrillBoxHeight=millimeter(14);
 // sets the distance of x related entities (positioning names, holes or holding pins) to the border.
 metalDrillPaddingLeft=millimeter(-2.6);
-metalDrillsmallestDrillDiameterInMM = 1.0;
+metalDrillSmallestDrillDiameterInMM = 1.0;
 // arg0: print name on the box, usually diameter or measured in millimeter
 // arg1: actual (that is, without printer tolerance) diameter in millimeter
 // arg2: calculated X position for positioning names, holes or holding pins.
@@ -75,22 +75,9 @@ module metalDrillBox() {
 
 module metalDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    paddingBottom = rampBarPaddingBottomInMM;
+    outerBoxVec=[metalDrillBoxWidth, metalDrillBoxDepth, metalDrillBoxHeight];
     
-    rampOffset = borderOffset + metalDrillsmallestDrillDiameterInMM;
-    
-    lowPoint=[
-        0, 
-        0 + paddingBottom, 
-        0 + rampOffset
-    ];
-    maxPoint=[
-        metalDrillBoxWidth, 
-        rampBarSizeInMM + paddingBottom,
-        metalDrillBoxHeight
-    ];
-
-    boxedRamp(lowPoint, maxPoint, 0);
+    drillHoldingBar(borderOffset, outerBoxVec, rampBarSizeInMM, rampBarPaddingBottomInMM, metalDrillSmallestDrillDiameterInMM);
 }
 
 module metalDrillBoxText() {
