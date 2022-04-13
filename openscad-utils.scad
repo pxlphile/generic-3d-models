@@ -160,7 +160,7 @@ module drillSizeText(drillHoleDiasAndPositionsInMM, paddingLeftInMM, printerTole
         translate([xPos+paddingLeftInMM, 37, -1.2 ])
             linear_extrude(height = 2)
                 rotate([180, 0, 180]) 
-                    text(txt, size = 2, font = str("Liberation Sans"), halign="center");
+                    text(txt, size = 3, font = str("Liberation Sans"), halign="center");
     }
 }
 

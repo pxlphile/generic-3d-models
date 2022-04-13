@@ -51,12 +51,12 @@ metalDrillHoleDiametersAndPositionsInMM=[
     [ "5", 5.0,                               5+6+8 +  2*millimeter(5 * nozzleDiameterInMM), 12.0 ],
     [ "4.5", 4.5,                         4.5+5+6+8 +  3*millimeter(5 * nozzleDiameterInMM), 12.0 ],
     [ "4", 4.0,                         4+4.5+5+6+8 +  4*millimeter(5 * nozzleDiameterInMM),  8.0 ],
-    [ "3.5", 3.5,                   3.5+4+4.5+5+6+8 +  5*millimeter(5 * nozzleDiameterInMM),  8.0 ],
-    [ "3.2", 3.2,               3.2+3.5+4+4.5+5+6+8 +  6*millimeter(5 * nozzleDiameterInMM),  8.0 ],
+    [ "3", 3.5,                   3.5+4+4.5+5+6+8 +  5*millimeter(5 * nozzleDiameterInMM),  8.0 ],
+    [ "", 3.2,               3.2+3.5+4+4.5+5+6+8 +  6*millimeter(5 * nozzleDiameterInMM),  8.0 ],
     [ "3", 3.0,               3+3.2+3.5+4+4.5+5+6+8 +  7*millimeter(5 * nozzleDiameterInMM),  5.0 ],
-    [ "2.5", 2.5,         2.5+3+3.2+3.5+4+4.5+5+6+8 +  8*millimeter(5 * nozzleDiameterInMM),  5.0 ],
+    [ "", 2.5,         2.5+3+3.2+3.5+4+4.5+5+6+8 +  8*millimeter(5 * nozzleDiameterInMM),  5.0 ],
     [ "2", 2.0,         2+2.5+3+3.2+3.5+4+4.5+5+6+8 +  9*millimeter(5 * nozzleDiameterInMM),  8.0 ],
-    [ "1.5", 1.5,   1.5+2+2.5+3+3.2+3.5+4+4.5+5+6+8 + 10*millimeter(5 * nozzleDiameterInMM), 12.0 ],
+    [ "", 1.5,   1.5+2+2.5+3+3.2+3.5+4+4.5+5+6+8 + 10*millimeter(5 * nozzleDiameterInMM), 12.0 ],
     [ "1", 1.0,   1+1.5+2+2.5+3+3.2+3.5+4+4.5+5+6+8 + 11*millimeter(5 * nozzleDiameterInMM), 14.0 ],
 ];
 
