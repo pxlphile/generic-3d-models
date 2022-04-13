@@ -71,7 +71,6 @@ module woodDrillBox() {
 
 module woodDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    barSize = millimeter(14 * nozzleDiameterInMM);
     paddingBottom = millimeter(30);
     rampOffset = borderOffset + woodDrillSmallestDrillDiameter;
     
@@ -82,7 +81,7 @@ module woodDrillHoldingBar() {
     ];
     maxPoint=[
         woodDrillBoxWidth, 
-        barSize + paddingBottom,
+        rampBarSizeInMM + paddingBottom,
         woodDrillBoxHeight
     ];
 

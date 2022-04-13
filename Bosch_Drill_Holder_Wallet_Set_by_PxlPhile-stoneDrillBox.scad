@@ -71,7 +71,6 @@ module stoneDrillBox() {
 
 module stoneDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    barSize = millimeter(14 * nozzleDiameterInMM);
     paddingBottom = millimeter(30);
     rampOffset = borderOffset + stoneDrillSmallestDrillDiameter;
     
@@ -82,7 +81,7 @@ module stoneDrillHoldingBar() {
     ];
     maxPoint=[
         stoneDrillBoxWidth, 
-        barSize + paddingBottom,
+        rampBarSizeInMM + paddingBottom,
         stoneDrillBoxHeight
     ];
 

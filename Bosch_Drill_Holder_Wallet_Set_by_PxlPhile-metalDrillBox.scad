@@ -75,7 +75,6 @@ module metalDrillBox() {
 
 module metalDrillHoldingBar() {
     borderOffset = millimeter(5 * nozzleDiameterInMM);
-    barSize = millimeter(14 * nozzleDiameterInMM);
     paddingBottom = millimeter(30);
     
     rampOffset = borderOffset + metalDrillsmallestDrillDiameterInMM;
@@ -87,7 +86,7 @@ module metalDrillHoldingBar() {
     ];
     maxPoint=[
         metalDrillBoxWidth, 
-        barSize + paddingBottom,
+        rampBarSizeInMM + paddingBottom,
         metalDrillBoxHeight
     ];
 
