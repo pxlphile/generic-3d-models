@@ -36,7 +36,8 @@ use <openscad-utils.scad>;
 metalDrillBoxWidth=millimeter(66);
 metalDrillBoxDepth=millimeter(42);
 metalDrillBoxHeight=millimeter(14);
-
+// sets the distance of x related entities (positioning names, holes or holding pins) to the border.
+metalDrillPaddingLeft=millimeter(-2.6);
 metalDrillsmallestDrillDiameterInMM = 1.0;
 // arg0: print name on the box, usually diameter or measured in millimeter
 // arg1: actual (that is, without printer tolerance) diameter in millimeter
@@ -98,34 +99,20 @@ module metalDrillBoxText() {
 }
 
 module metalDrillHoldingPins() {
-    for (entry = metalDrillHoleDiametersAndPositionsInMM) {        
-        xPos = entry[2];
-        yPos = entry[3];
-        
-        translate([xPos-4, yPos, -0 ])
-            rotate([90,0,0]) color("yellow") cube([2.4, 6.2, 1.7]);
-    }
-    
+    drillHoldingPins(metalDrillHoleDiametersAndPositionsInMM, metalDrillPaddingLeft);
 }
 
 module metalDrillHoldingHoles() {
-    for (entry = metalDrillHoleDiametersAndPositionsInMM) {
-        dia = entry[1] + printerRoughnessInMM;
-        xpos = entry[2];
-        
-        rotate([90, 0, 0]) 
-            translate([xpos-2.6, metalDrillBoxHeight/10 + dia/2, -40 ])
-                color("yellow") cylinder(d=dia, h=30, center=true);
-    }
+    drillHoldingHoles(metalDrillHoleDiametersAndPositionsInMM, metalDrillBoxHeight, metalDrillPaddingLeft, printerRoughnessInMM);
 }
 
 module metalDrillSizeLabel() {
-    drillSizeText(metalDrillHoleDiametersAndPositionsInMM, 0, printerRoughnessInMM);
+    drillSizeText(metalDrillHoleDiametersAndPositionsInMM, metalDrillPaddingLeft, printerRoughnessInMM);
 }
 
 module metalDrillMainBox() {
-    outerBoxVec=[metalDrillBoxWidth, metalDrillBoxDepth, metalDrillBoxHeight];
     borderAndPlaneThickness=5*nozzleDiameterInMM;
-    
+    outerBoxVec=[metalDrillBoxWidth, metalDrillBoxDepth, metalDrillBoxHeight];
+        
     openRoundedBox(outerBoxVec, borderAndPlaneThickness);
 }

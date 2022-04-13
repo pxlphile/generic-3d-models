@@ -130,15 +130,37 @@ module drillBoxText(txt, boxWidthInMM) {
                 text(txt, size = 5, font = str("Liberation Sans"), halign="center");
 }
 
-module drillSizeText(drillHoleDiasAndPositionsInMM, paddingLeftInMM, printerTolerance) {
+module drillSizeText(drillHoleDiasAndPositionsInMM, paddingLeftInMM, printerToleranceInMM) {
     for (entry = drillHoleDiasAndPositionsInMM) {
         txt = entry[0];
-        dia = entry[1] + printerTolerance;
+        dia = entry[1] + printerToleranceInMM;
         xPos = entry[2];
         
-        translate([xPos-2.3+paddingLeftInMM, 37, -1.2 ])
+        translate([xPos+paddingLeftInMM, 37, -1.2 ])
             linear_extrude(height = 2)
                 rotate([180, 0, 180]) 
                     text(txt, size = 2, font = str("Liberation Sans"), halign="center");
+    }
+}
+
+module drillHoldingHoles(drillHoleDiametersAndPositionsInMM, boxHeightInMM, paddingLeftInMM, printerToleranceInMM) {
+    
+    for (entry = drillHoleDiametersAndPositionsInMM) {
+        dia = entry[1] + printerToleranceInMM;
+        xPos = entry[2];
+        
+        rotate([90, 0, 0]) 
+            translate([xPos+paddingLeftInMM, boxHeightInMM/10 + dia/2, -40 ])
+                color("yellow") cylinder(d=dia, h=30, center=true);
+    }
+}
+
+module drillHoldingPins(drillHoleDiametersAndPositionsInMM, paddingLeftInMM) {
+    for (entry = drillHoleDiametersAndPositionsInMM) {
+        xPos=entry[2] + paddingLeftInMM;
+        yPos=entry[3];
+        
+        translate([xPos, yPos, 3.8 ])
+            rotate([90,0,0]) color("yellow") cube([2.4, 6.2, 1.7], center=true);
     }
 }

@@ -38,11 +38,13 @@ woodDrillBoxDepth=millimeter(42);
 woodDrillBoxHeight=millimeter(14);
 woodDrillSeparatorInMM=millimeter(3);
 woodDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
+// sets the distance of x related entities (positioning names, holes or holding pins) to the border.
+woodDrillPaddingLeft = millimeter(1.4);
 
 woodDrillSmallestDrillDiameter=millimeter(4);
 // arg0: print name on the box, usually diameter or measured in millimeter
 // arg1: actual (that is, without printer tolerance) diameter in millimeter
-// arg2: calculated X position for positioning names, holes or holding pins.
+// arg2: calculated position for x related entities (positioning names, holes or holding pins).
 //       calculating here X pos by myself because spreding non-equal objects 
 //       over an axis is a hell in OpenSCAD, don't judge me
 // arg3: pin Y position
@@ -92,34 +94,15 @@ module woodDrillBoxText() {
 }
 
 module woodDrillHoldingPins() {
-    paddingLeft = millimeter(5);
-    
-    for (entry = woodDrillHoleDiametersAndPositionsInMM) {
-        translate([entry[2] - 4+paddingLeft, entry[3], -0 ])
-            rotate([90,0,0]) color("yellow") cube([2.4, 6.2, 1.7]);
-    }
-    
+    drillHoldingPins(woodDrillHoleDiametersAndPositionsInMM, woodDrillPaddingLeft);
 }
 
 module woodDrillHoldingHoles() {
-    borderOffset = woodDrillSeparatorInMM;
-    
-    paddingLeft = millimeter(5);
-    
-    for (entry = woodDrillHoleDiametersAndPositionsInMM) {
-        dia = entry[1] + printerRoughnessInMM;
-        xpos = entry[2];
-        
-        rotate([90, 0, 0]) 
-            translate([xpos-2.6+paddingLeft, woodDrillBoxHeight/10 + dia/2, -40 ])
-                color("yellow") cylinder(d=dia, h=30, center=true);
-    }
+    drillHoldingHoles(woodDrillHoleDiametersAndPositionsInMM, woodDrillBoxHeight, woodDrillPaddingLeft, printerRoughnessInMM);
 }
 
 module woodDrillSizeLabel() {
-    paddingLeft = millimeter(5);
-
-    drillSizeText(woodDrillHoleDiametersAndPositionsInMM, paddingLeft, printerRoughnessInMM);
+    drillSizeText(woodDrillHoleDiametersAndPositionsInMM, woodDrillPaddingLeft, printerRoughnessInMM);
 }
 
 module woodDrillMainBox() {

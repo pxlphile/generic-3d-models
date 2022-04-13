@@ -38,6 +38,8 @@ stoneDrillBoxDepth=millimeter(42);
 stoneDrillBoxHeight=millimeter(14);
 stoneDrillSeparatorInMM=millimeter(3);
 stoneDrillBoxPlaneThickness=millimeter(5*nozzleDiameterInMM);
+// sets the distance of x related entities (positioning names, holes or holding pins) to the border.
+stoneDrillPaddingLeft = millimeter(6.4);
 
 stoneDrillSmallestDrillDiameter=millimeter(3.2);
 // arg0: print name on the box, usually diameter or measured in millimeter
@@ -92,35 +94,15 @@ module stoneDrillBoxText() {
 }
 
 module stoneDrillHoldingPins() {
-    borderOffset = stoneDrillSeparatorInMM;
-    
-    paddingLeft = millimeter(8);
-    
-    for (entry = stoneDrillHoleDiametersAndPositionsInMM) {
-        translate([entry[2] - 4+paddingLeft, entry[3], -0 ])
-            rotate([90,0,0]) color("yellow") cube([2.4, 6.2, 1.7]);
-    }
+    drillHoldingPins(stoneDrillHoleDiametersAndPositionsInMM, stoneDrillPaddingLeft);
 }
 
 module stoneDrillHoldingHoles() {
-    borderOffset = stoneDrillSeparatorInMM;
-    
-    paddingLeft = millimeter(8);
-    
-    for (entry = stoneDrillHoleDiametersAndPositionsInMM) {
-        dia = entry[1] + printerRoughnessInMM;
-        xpos = entry[2];
-        
-        rotate([90, 0, 0]) 
-            translate([xpos-2.3+paddingLeft, stoneDrillBoxHeight/10 + dia/2, -40 ])
-                color("yellow") cylinder(d=dia, h=30, center=true);
-    }
+    drillHoldingHoles(stoneDrillHoleDiametersAndPositionsInMM, stoneDrillBoxHeight, stoneDrillPaddingLeft, printerRoughnessInMM);
 }
 
 module stoneDrillSizeLabel() {
-    paddingLeft = millimeter(8);
-
-    drillSizeText(stoneDrillHoleDiametersAndPositionsInMM, paddingLeft, printerRoughnessInMM);
+    drillSizeText(stoneDrillHoleDiametersAndPositionsInMM, stoneDrillPaddingLeft , printerRoughnessInMM);
 }
 
 module stoneDrillMainBox() {
