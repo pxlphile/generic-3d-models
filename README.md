@@ -1,18 +1,5 @@
-# Drill holder for a Bosch Tool Wallet
+# Welcome to my generic 3D project bag
 
-This software works with OpenSCAD 2019.05 (or most probably later).
+## Licenses
 
-## Render an .stl
-1. Checkout all `.scad` files in this directory (they belong together)
-1. Open the main file `Bosch Drill Holder Wallet Set by PxlPhile.scad`
-1. 
-
-## Licesense
-
-[CC BY-NC-SA 4.0](LICENSE.txt)
-
-In all brevity:
-
-You may share and modify this work but you must attribute me as the original
-creator. You must not make money with my works because it should be free for
-all people and I worked my ass off countless nights.
+Please note that separate licenses per directory may apply. In general I'm okay if you use and modify my files but it is not okay if you make money from it.
